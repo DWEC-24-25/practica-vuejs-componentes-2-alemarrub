@@ -49,67 +49,65 @@ const EditForm = defineComponent({
 
 // Componente item-data
 const ItemData = Vue.defineComponent({
-  props: {
-    item: {
-      type: Object,
-      required: true
+    props: {
+        item: {
+        type: Object,
+        required: true
+        },
+        index: {
+        type: Number,
+        required: false
+        }
     },
-    index: {
-      type: Number,
-      required: false
-    }
-  },
-  data() {
-    return {
-      editing: false
-    };
-  },
-  methods: {
-    toggleEditFormVisibility() {
-      this.editing = !this.editing;
-    }
-  },
-  template: `
-    <div>
-      <div v-if="!editing">
-        <dl>
-          <template v-for="field in item.data" :key="field.name">
-            <dt>{{ field.prompt }}</dt>
-            <dd>{{ field.value }}</dd>
-          </template>
-        </dl>
-        <a 
-          :href="item.href" 
-          class="btn btn-primary" 
-          target="_blank"
-        >
-          Ver
-        </a>
-        <button 
-          class="btn btn-secondary ms-2" 
-          @click="toggleEditFormVisibility"
-        >
-          Editar
-        </button>
-      </div>
-      <div v-else>
-        <edit-form 
-          :itemdata="item.data" 
-          :index="index" 
-          @formClosed="toggleEditFormVisibility"
-        ></edit-form>
-      </div>
-    </div>
-  `
+    data() {
+        return {
+        editing: false
+        };
+    },
+    methods: {
+        toggleEditFormVisibility() {
+        this.editing = !this.editing;
+        }
+    },
+    template: `
+        <div>
+        <div v-if="!editing">
+            <dl>
+            <template v-for="field in item.data" :key="field.name">
+                <dt>{{ field.prompt }}</dt>
+                <dd>{{ field.value }}</dd>
+            </template>
+            </dl>
+            <a 
+            :href="item.href" 
+            class="btn btn-primary" 
+            target="_blank"
+            >
+            Ver
+            </a>
+            <button 
+            class="btn btn-secondary ms-2" 
+            @click="toggleEditFormVisibility"
+            >
+            Editar
+            </button>
+        </div>
+        <div v-else>
+            <edit-form 
+            :itemdata="item.data" 
+            :index="index" 
+            @formClosed="toggleEditFormVisibility"
+            ></edit-form>
+        </div>
+        </div>
+    `
 });
 
 // Crear la aplicación Vue
-const app = createApp({
-    setup() {
-        const col = reactive(server_data.collection);
-
-        return {
-            col
+const app = Vue.createApp({
+    data() {
+        return { 
+        col: server_data
         };
     }
 });
