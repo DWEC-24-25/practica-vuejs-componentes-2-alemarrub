@@ -48,22 +48,59 @@ const EditForm = defineComponent({
 });
 
 // Componente item-data
-const ItemData = defineComponent({
-    props: {
-        item: {
-            type: Object,
-            required: true
-        }
+const ItemData = Vue.defineComponent({
+  props: {
+    item: {
+      type: Object,
+      required: true
     },
-    template: `
-        <div>
-            <h3>{{ item.data.find(d => d.name === 'name').value }}</h3>
-            <p>{{ item.data.find(d => d.name === 'description').value }}</p>
-            <p><strong>Director:</strong> {{ item.data.find(d => d.name === 'director').value }}</p>
-            <p><strong>Release Date:</strong> {{ item.data.find(d => d.name === 'datePublished').value }}</p>
-            <a :href="item.href" target="_blank">More Info</a>
-        </div>
-    `
+    index: {
+      type: Number,
+      required: false
+    }
+  },
+  data() {
+    return {
+      editing: false
+    };
+  },
+  methods: {
+    toggleEditFormVisibility() {
+      this.editing = !this.editing;
+    }
+  },
+  template: `
+    <div>
+      <div v-if="!editing">
+        <dl>
+          <template v-for="field in item.data" :key="field.name">
+            <dt>{{ field.prompt }}</dt>
+            <dd>{{ field.value }}</dd>
+          </template>
+        </dl>
+        <a 
+          :href="item.href" 
+          class="btn btn-primary" 
+          target="_blank"
+        >
+          Ver
+        </a>
+        <button 
+          class="btn btn-secondary ms-2" 
+          @click="toggleEditFormVisibility"
+        >
+          Editar
+        </button>
+      </div>
+      <div v-else>
+        <edit-form 
+          :itemdata="item.data" 
+          :index="index" 
+          @formClosed="toggleEditFormVisibility"
+        ></edit-form>
+      </div>
+    </div>
+  `
 });
 
 // Crear la aplicación Vue
